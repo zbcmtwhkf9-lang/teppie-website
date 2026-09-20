@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08a9e4">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="description" content="Teppie helpt je afleidende apps blokkeren met één simpele tik. Voor iPhone en Android, met Foqos of Switchly.">
+  <title>Teppie — kleine tik, meer tijd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Lobster&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23ef9bdb' stroke='%23dff4b7' stroke-width='5'/%3E%3Cellipse cx='23' cy='25' rx='3.5' ry='5' fill='%23dff4b7'/%3E%3Cellipse cx='41' cy='25' rx='3.5' ry='5' fill='%23dff4b7'/%3E%3Cpath d='M17 36 Q32 51 47 36' fill='none' stroke='%23dff4b7' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --blue: #08a9e4;
+      --blue-dark: #063875;
+      --navy: #092c5c;
+      --pink: #ee9bd8;
+      --mint: #e0f4b8;
+      --orange: #ffad43;
+      --paper: #fffdf8;
+      --white: #ffffff;
+      --muted: #5e6b7b;
+      --line: rgba(9, 44, 92, .12);
+      --shadow: 0 24px 65px rgba(22, 51, 90, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--navy);
+      background: var(--paper);
+      font-family: "Figtree", system-ui, sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgba(9, 44, 92, .07);
+      background: rgba(255, 253, 248, .88);
+      backdrop-filter: blur(16px);
+    }
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .wordmark {
+      font-family: "Lobster", cursive;
+      font-size: 2.35rem;
+      line-height: 1;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: -.03em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { font-size: .94rem; font-weight: 700; text-decoration: none; }
+    .nav-links a:not(.button):hover { color: var(--blue); }
+
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 24px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--blue);
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(8, 169, 228, .24);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(8, 169, 228, .3); background: #029bd4; }
+    .button.secondary { background: white; color: var(--navy); border: 1px solid var(--line); box-shadow: none; }
+    .button.secondary:hover { border-color: var(--blue); color: var(--blue-dark); }
+    .arrow { font-size: 1.25em; line-height: 1; }
+
+    .hero { padding: 72px 0 82px; position: relative; }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 530px;
+      height: 530px;
+      right: -180px;
+      top: -130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(224,244,184,.6), rgba(224,244,184,0) 69%);
+      pointer-events: none;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: 76px; }
+    .eyebrow { margin: 0 0 14px; color: var(--blue-dark); text-transform: uppercase; letter-spacing: .13em; font-size: .78rem; font-weight: 900; }
+    h1, h2, h3 { margin: 0; line-height: 1.04; letter-spacing: -.045em; }
+    h1 { max-width: 690px; font-size: clamp(3.4rem, 6.7vw, 6.3rem); font-weight: 900; }
+    h2 { font-size: clamp(2.35rem, 4.3vw, 4.2rem); font-weight: 900; }
+    h3 { font-size: 1.55rem; font-weight: 850; }
+    .hero-copy { max-width: 620px; margin: 24px 0 30px; font-size: 1.18rem; color: #394e6a; }
+    .hero-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .microcopy { font-size: .88rem; color: var(--muted); font-weight: 600; }
+    .hero-photo {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border-radius: 46px 46px 46px 140px;
+      background: var(--pink);
+      box-shadow: var(--shadow);
+    }
+    .hero-photo img { width: 100%; height: 100%; min-height: 560px; object-fit: cover; object-position: center 42%; }
+    .hero-sticker {
+      position: absolute;
+      right: 22px;
+      top: 22px;
+      width: 138px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      border-radius: 50%;
+      transform: rotate(7deg);
+      background: var(--orange);
+      color: var(--navy);
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.15;
+      box-shadow: 0 12px 28px rgba(35, 52, 72, .18);
+    }
+
+    .compatibility {
+      border-block: 1px solid var(--line);
+      background: white;
+    }
+    .compatibility-row { min-height: 74px; display: flex; justify-content: center; align-items: center; gap: 16px; text-align: center; font-weight: 700; }
+    .phone-icon { width: 23px; height: 38px; border: 3px solid var(--navy); border-radius: 7px; position: relative; flex: 0 0 auto; }
+    .phone-icon::after { content: ""; position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--navy); left: 50%; bottom: 3px; transform: translateX(-50%); }
+
+    section { padding: 112px 0; }
+    .section-head { max-width: 760px; margin: 0 auto 52px; text-align: center; }
+    .section-head p { max-width: 650px; margin: 18px auto 0; color: var(--muted); }
+
+    .products { background: #f5fbff; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .product-card { overflow: hidden; border-radius: 34px; background: white; border: 1px solid rgba(9,44,92,.08); box-shadow: 0 18px 50px rgba(24,61,98,.08); }
+    .product-image { height: 320px; overflow: hidden; background: #f3f4f1; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+    .product-image.bundle-images { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .product-image.bundle-images img { min-width: 0; }
+    .product-card:hover .product-image img { transform: scale(1.025); }
+    .product-body { padding: 30px; }
+    .product-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .price { color: var(--blue-dark); font-size: 1.5rem; font-weight: 900; white-space: nowrap; }
+    .tag { display: inline-flex; margin-top: 9px; padding: 6px 12px; border-radius: 999px; background: #eff9d9; color: #31540f; font-size: .78rem; font-weight: 800; }
+    .product-body p { margin: 20px 0 25px; color: var(--muted); }
+
+    .steps { position: relative; }
+    .steps::after { content: ""; position: absolute; z-index: -1; left: -100px; bottom: 20px; width: 330px; height: 330px; border-radius: 50%; background: rgba(238,155,216,.13); }
+    .step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .step { padding: 34px; border-radius: 30px; border: 1px solid var(--line); background: white; }
+    .step-number { width: 52px; height: 52px; display: grid; place-items: center; margin-bottom: 25px; border-radius: 50%; font-size: 1.2rem; font-weight: 900; background: var(--pink); color: var(--navy); }
+    .step:nth-child(2) .step-number { background: #cdefff; }
+    .step:nth-child(3) .step-number { background: var(--mint); }
+    .step p { margin: 13px 0 0; color: var(--muted); }
+
+    .apps { background: var(--navy); color: white; }
+    .apps .section-head p { color: #c7d6ea; }
+    .app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .app-card { min-height: 360px; padding: 38px; border-radius: 34px; background: white; color: var(--navy); display: flex; flex-direction: column; align-items: flex-start; }
+    .platform { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 26px; padding: 7px 13px; border-radius: 999px; background: #edf8ff; color: var(--blue-dark); font-size: .82rem; font-weight: 900; }
+    .app-card p { color: var(--muted); margin: 18px 0 24px; }
+    .app-card ul { margin: 0 0 30px; padding-left: 22px; color: #3e526c; }
+    .app-card .button { margin-top: auto; }
+
+    .order { padding: 116px 0; }
+    .order-box {
+      position: relative;
+      overflow: hidden;
+      padding: 70px;
+      border-radius: 44px;
+      background: linear-gradient(135deg, #eaf8ff, #fff1fa 57%, #f1fbdc);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .order-box::before, .order-box::after { content: ""; position: absolute; border-radius: 50%; opacity: .75; }
+    .order-box::before { width: 100px; height: 100px; background: var(--orange); left: -34px; top: -38px; }
+    .order-box::after { width: 75px; height: 75px; background: var(--pink); right: -22px; bottom: -25px; }
+    .order-box p { max-width: 650px; margin: 20px auto 30px; color: #40536d; }
+    .personal-order-note {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      margin: 0 !important;
+      padding: 13px 24px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: white !important;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(8, 169, 228, .24);
+    }
+    .hobby-note { margin-top: 18px !important; font-size: .88rem; color: var(--muted) !important; }
+
+    footer { padding: 34px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .83rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 30px; align-items: center; }
+    .disclaimer { max-width: 730px; }
+
+    @media (max-width: 900px) {
+      .nav-links a:not(.button) { display: none; }
+      .hero { padding-top: 48px; }
+      .hero-grid, .product-grid, .app-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 45px; }
+      .hero-photo, .hero-photo img { min-height: 500px; }
+      .step-grid { grid-template-columns: 1fr; }
+      section { padding: 84px 0; }
+    }
+
+    @media (max-width: 600px) {
+      body { font-size: 17px; }
+      .wrap { width: min(100% - 28px, 1180px); }
+      .nav { min-height: 68px; }
+      .wordmark { font-size: 2rem; }
+      .nav .button { min-height: 44px; padding: 10px 17px; font-size: .86rem; }
+      h1 { font-size: clamp(3.15rem, 15vw, 4.6rem); }
+      .hero { padding: 42px 0 62px; }
+      .hero-photo { min-height: 420px; border-radius: 30px 30px 30px 90px; }
+      .hero-photo img { min-height: 420px; }
+      .hero-sticker { width: 112px; right: 13px; top: 13px; font-size: .85rem; }
+      .compatibility-row { min-height: 84px; font-size: .94rem; }
+      section { padding: 72px 0; }
+      .section-head { margin-bottom: 38px; }
+      .product-image { height: 300px; }
+      .product-body, .step, .app-card { padding: 26px; }
+      .order-box { padding: 54px 24px; border-radius: 32px; }
+      .footer-row { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Hoofdnavigatie">
+      <a class="wordmark" href="#top" aria-label="Teppie, naar boven">Teppie</a>
+      <div class="nav-links">
+        <a href="#producten">Producten</a>
+        <a href="#werking">Hoe het werkt</a>
+        <a href="#apps">Apps</a>
+        <a class="button" href="#bestellen">Bestellen</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-grid wrap">
+        <div>
+          <p class="eyebrow">Van scrollen naar doen</p>
+          <h1>Kleine tik.<br>Meer tijd voor jezelf.</h1>
+          <p class="hero-copy">Teppie helpt je om afleidende apps te blokkeren. Kies wat je even niet nodig hebt, tik met je telefoon tegen Teppie en geniet van de rust.</p>
+          <div class="hero-actions">
+            <a class="button" href="#producten">Kies jouw Teppie <span class="arrow">→</span></a>
+            <span class="microcopy">Vanaf €6,99 · custom kleuren mogelijk</span>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="/assets/teppie-original.jpg" alt="Twee kleurrijke Teppies op een bank" width="768" height="1365">
+          <div class="hero-sticker">Tik.<br>Focus.<br>Klaar.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="compatibility">
+      <div class="compatibility-row wrap"><span class="phone-icon" aria-hidden="true"></span> Werkt met apps als Foqos op iPhone en Switchly op Android.</div>
+    </div>
+
+    <section class="products" id="producten">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">Kies jouw favoriet</p>
+          <h2>Twee Teppies, hetzelfde doel</h2>
+          <p>Geef Teppie een vaste plek of neem hem overal mee naartoe. Beide versies bevatten een NFC-chip en zijn verkrijgbaar in verschillende kleurcombinaties.</p>
+        </header>
+        <div class="product-grid">
+          <article class="product-card">
+            <div class="product-image"><img src="/assets/teppie-colors.png" alt="Teppie Original in vier kleurcombinaties" width="1254" height="1254"></div>
+            <div class="product-body">
+              <div class="product-top">
+                <div><h3>Teppie Original</h3><span class="tag">Magnetisch</span></div>
+                <span class="price">€9,99</span>
+              </div>
+              <p>Voor een vaste plek op je bureau, koelkast of nachtkastje. Scan hem wanneer je bewust afstand wilt nemen van je telefoon.</p>
+              <a class="button" href="#bestellen">Ik wil de Original <span class="arrow">→</span></a>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-image"><img src="/assets/teppie-keys.png" alt="Teppie Keys aan een sleutelbos" width="1254" height="1254"></div>
+            <div class="product-body">
+              <div class="product-top">
+                <div><h3>Teppie Keys</h3><span class="tag">Altijd bij je</span></div>
+                <span class="price">€6,99</span>
+              </div>
+              <p>De compacte sleutelhanger-versie. Handig als je Teppie thuis, onderweg, op school of op je werk wilt gebruiken.</p>
+              <a class="button" href="#bestellen">Ik wil Teppie Keys <span class="arrow">→</span></a>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-image bundle-images">
+              <img src="/assets/teppie-colors.png" alt="Teppie Original uit de Teppie Bundel" width="1254" height="1254">
+              <img src="/assets/teppie-keys.png" alt="Teppie Keys uit de Teppie Bundel" width="1254" height="1254">
+            </div>
+            <div class="product-body">
+              <div class="product-top">
+                <div><h3>Teppie Bundel</h3><span class="tag">Bespaar €1,99</span></div>
+                <span class="price">€14,99</span>
+              </div>
+              <p>Eén Teppie Original voor een vaste plek én één Teppie Keys voor onderweg. Kies voor allebei je eigen kleurcombinatie.</p>
+              <a class="button" href="#bestellen">Ik wil de bundel <span class="arrow">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps" id="werking">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">Zo werkt het</p>
+          <h2>Rust in drie tikken</h2>
+        </header>
+        <div class="step-grid">
+          <article class="step"><div class="step-number">1</div><h3>Download een app</h3><p>Gebruik Foqos op een iPhone of Switchly op een Android-telefoon.</p></article>
+          <article class="step"><div class="step-number">2</div><h3>Kies je afleiding</h3><p>Selecteer de apps en websites die je tijdens een focusmoment wilt blokkeren.</p></article>
+          <article class="step"><div class="step-number">3</div><h3>Tik en focus</h3><p>Houd je telefoon tegen Teppie om je ingestelde focusprofiel te activeren of stoppen.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="apps" id="apps">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" style="color:#80daf8">Kies de app voor jouw telefoon</p>
+          <h2>Teppie doet het samen met een app</h2>
+          <p>De app regelt welke apps worden geblokkeerd. Teppie is de fysieke sleutel waarmee jij je focusmoment start of stopt.</p>
+        </header>
+        <div class="app-grid">
+          <article class="app-card">
+            <span class="platform">iPhone · iOS</span>
+            <h3>Foqos</h3>
+            <p>Een gratis, open-source appblocker voor iPhone. Maak een profiel, selecteer je afleidende apps en koppel je Teppie als NFC-tag.</p>
+            <ul><li>Gratis en zonder abonnement</li><li>Blokkeert apps en websites</li><li>Ondersteunt NFC-profielen</li></ul>
+            <a class="button secondary" href="https://www.foqos.app/" target="_blank" rel="noopener">Bekijk Foqos <span class="arrow">↗</span></a>
+          </article>
+          <article class="app-card">
+            <span class="platform">Android</span>
+            <h3>Switchly</h3>
+            <p>Een Android-app waarmee je apps, websites en ondersteunde onderdelen binnen apps kunt blokkeren. Je kunt Teppie gebruiken als fysieke NFC-schakelaar.</p>
+            <ul><li>Gratis basisversie en geen advertenties</li><li>Profielen, schema’s en tijdelijke toegang</li><li>Werkt met beschrijfbare NFC-tags</li></ul>
+            <a class="button secondary" href="https://play.google.com/store/apps/details?id=at.saltyy.switchly" target="_blank" rel="noopener">Bekijk Switchly <span class="arrow">↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="order" id="bestellen">
+      <div class="wrap">
+        <div class="order-box">
+          <p class="eyebrow">Klaar met eindeloos scrollen?</p>
+          <h2>Kies je kleuren en stuur Tijmen een appje</h2>
+          <p>Laat via WhatsApp weten welk model en welke kleuren je wilt, dan spreken we de mogelijkheden samen door. Mijn nummer staat bewust niet openbaar op deze pagina.</p>
+          <p class="personal-order-note">Stuur Tijmen een WhatsAppje</p>
+          <p class="hobby-note">Teppie is een kleinschalig hobbyproject voor vrienden, familie en bekenden.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-row wrap">
+      <a class="wordmark" href="#top">Teppie</a>
+      <div class="disclaimer">Teppie is een kleinschalig hobbyproject en een onafhankelijk NFC-accessoire. Teppie is niet verbonden aan of goedgekeurd door Foqos of Switchly. Beschikbaarheid en werking van deze externe apps kunnen veranderen.</div>
+    </div>
+  </footer>
+</body>
+</html>
